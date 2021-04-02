@@ -1,0 +1,35 @@
+﻿@model StrikeNet.BusinessLogic.Dtos.GamesDto;
+
+@{
+    ViewData["Title"] = "Uitslagen";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Uitslagen</h1>
+    <p>Zie hieronder uitslagen van recente wedstrijden en jouw scores hierbij.</p>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        @foreach (var game in Model.AllGames)
+        {
+            @if (game != null)
+            {
+                @if (!string.IsNullOrEmpty(game.Result))
+                {
+                    @*<div class="grid grid-cols-3 gap-2">*@
+                        <div class="card mx-auto" style="width:350px; height:230px;  border: solid white 5px">
+                            <div class="content">
+                                <center>
+                                    <h2 class="title banner">@game.Team1 - <br/> @game.Team2</h2>
+                                    <p class="copy">@Convert.ToString(game.Date)</p>
+                                    <a class="btn btn-warning text-white" asp-controller="Uitslagen" asp-action="Uitslag" asp-route-gameId=@game.Id>Bekijk resultaat</a>
+                                </center>
+                            </div>
+                        </div>
+                    @*</div>*@
+                 }
+             }
+         }
+    </div>
+</div>

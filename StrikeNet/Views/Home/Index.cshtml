@@ -1,0 +1,210 @@
+﻿@model HomePageViewModel;
+@using StrikeNet.BusinessLogic.Services.Interface;
+@using StrikeNet.BusinessLogic.Dtos;
+@inject IIdentityService  _identityService;
+
+@{
+    ViewData["Title"] = "Dashboard";
+    List<GameDto> UpcomingGames = new List<GameDto>();
+    List<GameDto> PastGames = new List<GameDto>();
+
+    foreach(var game in Model.Games)
+    {
+        if (string.IsNullOrEmpty(game.Result))
+        {
+            UpcomingGames.Add(game);
+        } else
+        {
+            PastGames.Add(game);
+        }
+    }
+}
+
+    <div class="text-center">
+        <h1 class="display-4">Welkom op StrikeNet!</h1>
+
+        @if (_identityService.IsSignedIn(User))
+        {
+            <p>Druk op 1 van de knoppen in de navigatiebalk om naar een pagina te gaan!</p>
+        }
+        else 
+        { 
+            <p>Log in of maak een account aan en begin meteen met voorspellen!</p>
+        }
+    </div>
+
+    <div class="indexcontainer float-left">
+        <h3 class="banner text-center">Aankomende wedstrijden</h3>
+        @if (Model != null)
+        {
+            if (UpcomingGames.Count > 3)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    var game = UpcomingGames[i];
+                    <div class="card" style="width:350px; height:140px">
+                        <div class="content">
+                            <center>
+                                <p class="title font-weight-bold">@game.Team1 - @game.Team2</p>
+                                <p class="copy">@Convert.ToString(game.Date)</p>
+                                @if (_identityService.IsSignedIn(User))
+                                {
+                                    var user = await _identityService.GetUserAsync(User.Identity.Name);
+                                    <a class="btn btn-primary text-white" asp-controller="Voorspellingen" asp-action="Voorspelling" asp-route-gameId=@game.Id asp-route-userId=@user.Id>Voorspel!</a>
+                                }
+                            </center>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                foreach (var game in UpcomingGames)
+                {
+                    <div class="card" style="width:350px; height:140px">
+                        <div class="content">
+                            <center>
+                                <p class="title font-weight-bold">@game.Team1 - @game.Team2</p>
+                                <p class="copy">@Convert.ToString(game.Date)</p>
+                                @if (_identityService.IsSignedIn(User))
+                                {
+                                    var user = await _identityService.GetUserAsync(User.Identity.Name);
+                                    <a class="btn btn-primary text-white" asp-controller="Voorspellingen" asp-action="Voorspelling" asp-route-gameId=@game.Id asp-route-userId=@user.Id>Voorspel!</a>
+                                }
+                            </center>
+                        </div>
+                    </div>
+                }
+            }
+        }
+        <div class="text-center">
+            <br />
+            <a class="btn btn-warning" asp-controller="Voorspellingen" asp-action="Voorspellingen">Bekijk alles!</a>
+        </div>
+    </div>
+
+    <div class="indexcontainer float-right" style="margin-bottom:80px">
+        <h3 class="banner text-center">Recente wedstrijden</h3>
+        @if (Model != null)
+        {
+            if (PastGames.Count > 3)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    var game = PastGames[i];
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="card" style="width:350px; height:140px">
+                            <div class="content">
+                                <center>
+                                    <p class="title font-weight-bold">@game.Team1 - @game.Team2</p>
+                                    <p class="copy">@Convert.ToString(game.Date)</p>
+                                    @if (_identityService.IsSignedIn(User))
+                                    {
+                                        <a class="btn btn-primary text-white" asp-controller="Uitslagen" asp-action="Uitslag" asp-route-gameId=@game.Id>Bekijk resultaat</a>
+                                    }
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                foreach (var game in PastGames)
+                {
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="card" style="width:350px; height:140px">
+                            <div class="content">
+                                <center>
+                                    <p class="title font-weight-bold">@game.Team1 - @game.Team2</p>
+                                    <p class="copy">@Convert.ToString(game.Date)</p>
+                                    @if (_identityService.IsSignedIn(User))
+                                    {
+                                        <a class="btn btn-primary text-white" asp-controller="Uitslagen" asp-action="Uitslag" asp-route-gameId=@game.Id>Bekijk resultaat</a>
+                                    }
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+        <div class="text-center">
+            <br />
+            <a class="btn btn-warning" asp-controller="Uitslagen" asp-action="Uitslagen">Bekijk alles!</a>
+        </div>
+    </div>
+
+    <div class="indexcontainer text-center">
+        <h3 class="banner text-center">Huidige top 3</h3>
+        @if (_identityService.IsSignedIn(User))
+        {
+            if (Model != null)
+            {
+    <div class="text-center">
+        <table border="1">
+            <tr>
+                <th width="350">Gebruikersnaam</th>
+                <th width="68">Score</th>
+            </tr>
+            @if (Model.Users.Count > 3)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    var user = Model.Users[i];
+                    string[] names = user.Email.Split("@");
+                    <tr>
+                        <td width="200">@names[0]</td>
+                        <td>@user.Score</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                @foreach (var user in Model.Users)
+                {
+                    string[] names = user.Email.Split("@");
+                    <tr>
+                        <td width="200">@names[0]</td>
+                        <td>@user.Score</td>
+                    </tr>
+                }
+            }
+        </table>
+        <br />
+        <a class="btn btn-warning" asp-controller="Leaderboard" asp-action="Leaderboards">Bekijk alles!</a>
+    </div>
+            }
+        } 
+        else
+        {
+        <div class="disabledcontainer">
+            <br/>
+            <br/>
+            <br/>
+            <p>Log in om de leaderboards te zien!</p>
+        </div>
+        }
+
+        <br/>
+
+        <div class="card badge-info bg-warning">
+            <h3 style="color:black">Over StrikeNet</h3>
+            <p class="h6">
+                StrikeNet is een website waar je de uitslagen van wedstrijden in de UEFA Champions League kunt voorspellen.
+                Je kunt over deze voorspellingen punten innen en strijden met andere spelers om de hoogste plaats op onze leaderboards!
+                Doe gezellig mee en deel deze website met iedereen in jouw omgeving #JoinStrikeNet!
+            </p>
+        </div>
+
+        <br/>
+
+        <div class="card border-danger">
+            <h3 class="text-black">Bericht van StrikeNet</h3>
+            <p class="h6 small">
+                Vanwege de uitbraak van de pandemie in Europa zijn de resterende wedstrijden van dit UCL seizoen tot nader order opgeschort.
+                Het is voor ons bij StrikeNet nog onbekend wanneer de competitie hervat zal worden en daarom zijn de data op onze website niet altijd correct zijn.
+                U kunt wel gewoon voorspellingen indienen. Bedankt voor uw begrip.
+            </p>
+        </div>
+    </div>

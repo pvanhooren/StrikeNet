@@ -1,0 +1,55 @@
+﻿@model StrikeNet.ViewModels.UitslagViewModel
+
+@{
+    ViewData["Title"] = "Voorspelling";
+}
+
+<div class="text-center">
+    <h1 class="display-4 banner">@Model.Game.Team1  - @Model.Game.Team2</h1><br />
+
+    <div class="card float-right mt-5 mr-5 border-warning w-50">
+    @if (Model.Prediction != "" && Model.Prediction != null)
+    {
+    <p>Jouw voorspelling: @Model.Prediction</p>
+    }
+    else
+    {
+        <p>Je hebt geen voorspelling ingediend voor deze wedstrijd</p>
+    }
+    <p>Uitslag: @Model.Game.Result</p>
+    <p>Verdiende punten: @Convert.ToString(Model.EarnedPoints)</p>
+        @if (Model.PointsReceived == false)
+    {
+        <form method="post">
+            <input asp-for="Game.Id" type="hidden" />
+            <input asp-for="User.Id" type="hidden" />
+            <input asp-for="Prediction" type="hidden" />
+            <input asp-for="EarnedPoints" type="hidden" />
+            <input asp-for="PointsReceived" type="hidden" />
+            <button class="btn btn-warning" type="submit">Ontvang punten!</button>
+        </form>
+    }
+    else
+    {
+        <p>Je hebt je punten voor deze wedstrijd al verzameld</p>
+    }
+    </div>
+
+    <div class="float-left" style="width:45%">
+    @if (Model.EarnedPoints == 3)
+    {
+        <img src="https://media1.tenor.com/images/862e07af57ab8cfa9c2c4114fa94cdad/tenor.gif?itemid=7911501" />
+        <p>De perfecte score! Wat goeeeeeeeeeed!</p>
+    }
+    else if (Model.EarnedPoints == 1)
+    {
+        <img src="https://i.imgur.com/0mKXcg1.gif" class="w-100" />
+        <p>Gefeliciteerd! Je hebt de winnaar juist geraden.</p>
+    }
+    else
+    {
+        <img src="https://media.giphy.com/media/jPAdK8Nfzzwt2/giphy.gif" />
+        <p>Geen punten, volgende keer beter!</p>
+    }
+    </div>
+</div>

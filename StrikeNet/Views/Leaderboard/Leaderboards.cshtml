@@ -1,0 +1,52 @@
+﻿@using StrikeNet.BusinessLogic.Dtos;
+
+@model UsersDto
+
+@{
+    ViewData["Title"] = "Leaderboards";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Leaderboards</h1>
+    <p>Zie hier de StrikeNet spelers met de hoogste aantallen aan punten dit seizoen!</p>
+</div>
+
+<table border="1">
+    <tr>
+        <th class="banner" width="1400">Gebruikersnaam</th>
+        <th class="banner">Score</th>
+    </tr>
+    @foreach (var user in Model.Results)
+    {
+        string[] names = user.Email.Split("@");
+        <tr>
+            <td width="200">@names[0]</td>
+            <td>@user.Score</td>
+        </tr>
+    }
+</table>
+
+<div class="info"></div>
+
+<br />
+<div class="float-left" style="width:49%">
+    <div class="card bg-warning text-center">
+        <h3 class="text-black">Hoe werkt dit?</h3>
+        <p class="h6 small text-white">
+            Als je een voorspelling hebt gedaan voor een wedstrijd, zal deze automatisch worden vergeleken met de daadwerkelijke uitslag
+            van de wedstrijd op het moment dat de uitslag ingevoerd wordt door een van onze admins. Je kan dan zelf door via uitslagen de
+            desbetreffende wedstrijd te bekijken je verdiende punten innen.
+        </p>
+    </div>
+</div>
+
+<div class="float-right" style="width:49%">
+    <div class="card border-warning text-center">
+        <h3 class="text-black">Wat is de puntenschaal?</h3>
+        <p class="h6 small">
+            Voor elke voorspelling ontvang je 0, 1 of 3 punten. Een goed geraden type uitslag (winst voor het ene team, winst voor het andere team of
+            gelijkspel) levert je zoiezo 1 punt op. Als je de exacte uitslag juist geraden hebt, komen er nog 2 punten bij en beland je op 3 punten. Een verkeerd
+            type resultaat is direct 0 punten.
+        </p>
+    </div>
+</div>

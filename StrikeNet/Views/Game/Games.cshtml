@@ -1,0 +1,40 @@
+﻿@model StrikeNet.BusinessLogic.Dtos.GamesDto
+@{
+    ViewData["Title"] = "Wedstrijd admin";
+}
+    <div style="height:50px">
+        <h1 class="text-left" style="display:inline-block">Wedstrijd Admin</h1>
+        <a class="btn bg-warning float-right" style="margin-top:5px; margin-bottom:5px; margin-right:5px" asp-controller="Game" asp-action="CreateGame">Nieuwe wedstrijd</a>
+    </div>
+
+<table class="table">
+    <thead class="banner">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Team1</th>
+            <th scope="col">Team2</th>
+            <th scope="col">Date</th>
+            <th scope="col">Result</th>
+            <th scope="col">Acties</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var game in Model.AllGames)
+        {
+            <tr>
+                <th scope="row">@game.Id</th>
+                <td>@game.Team1</td>
+                <td>@game.Team2</td>
+                <td>@game.Date</td>
+                <td>@game.Result</td>
+                <td>
+                    <a asp-action="Game" asp-route-id="@game.Id">Detail</a>
+                    |
+                    <a asp-action="UpdateGame" asp-route-id="@game.Id">Wijzig</a>
+                    |
+                    <a asp-action="RemoveGame" asp-route-id="@game.Id">Verwijder</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

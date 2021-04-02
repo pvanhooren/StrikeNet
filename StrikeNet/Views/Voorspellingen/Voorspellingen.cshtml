@@ -1,0 +1,36 @@
+﻿@using StrikeNet.BusinessLogic.Services.Interface;
+@model StrikeNet.BusinessLogic.Dtos.GamesDto;
+@inject IIdentityService _identityService;
+
+@{
+    ViewData["Title"] = "Voorspellingen";
+    var user = await _identityService.GetUserAsync(User.Identity.Name);
+}
+
+<div class="text-center">
+    <h1 class="display-4">Voorspellingen</h1>
+    <p>Voorspel de uitslag van...</p>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        @foreach (var game in Model.AllGames)
+        {
+            @if (game != null)
+            {
+                @if (string.IsNullOrEmpty(game.Result))
+                {
+                    <div class="card mx-auto" style="width: 350px; height: 180px; border: solid white 5px">
+                        <div class="content">
+                            <center>
+                                <h2 class="title banner">@game.Team1 - <br/> @game.Team2</h2>
+                                <p class="copy">@Convert.ToString(game.Date)</p>
+                                <a class="btn btn-warning text-white" asp-controller="Voorspellingen" asp-action="Voorspelling" asp-route-gameId=@game.Id asp-route-userId=@user.Id>Voorspel!</a>
+                            </center>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+</div>

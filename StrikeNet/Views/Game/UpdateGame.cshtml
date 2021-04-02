@@ -1,0 +1,28 @@
+﻿@model StrikeNet.ViewModels.GameViewModel
+@{
+    ViewData["Title"] = "Wijzig wedstrijd";
+}
+
+<h1 class="banner">@ViewData["Title"]</h1>
+<form asp-action="UpdateGame">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Team1">Team 1</label>
+        <input class="form-control" asp-for="Team1">
+    </div>
+    <div class="form-group">
+        <label asp-for="Team2">Team 2</label>
+        <input class="form-control" asp-for="Team2">
+    </div>
+    <div class="form-group">
+        <label asp-for="Date">Datum en tijd</label>
+        <input class="form-control" asp-for="Date">
+    </div>
+    <div class="form-group">
+        <label asp-for="Result">Uitslag</label>
+        <input class="form-control" asp-for="Result">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Wijzig</button>
+</form>

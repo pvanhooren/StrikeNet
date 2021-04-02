@@ -1,0 +1,28 @@
+﻿body {
+}
+
+.indexcontainer {
+    border: solid white 10px;
+}
+
+.banner {
+    background-color: #F6BF00;
+}
+
+.disabledcontainer{
+    width: auto;
+    height: 160px;
+    background-color:lightgray;
+    background-color:darkgray;
+    text-align:center;
+}
+
+.centeredtext{
+    margin-top:50%;
+}
+
+.dangercard{
+    outline-color: red;
+}
+
+
